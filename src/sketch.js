@@ -79,11 +79,11 @@ function drawSkeleton(poses) {
         strokeWeight(pose.score+'px');
         line(p1.position.x, p1.position.y, p2.position.x, p2.position.y);
 
-      else {
-        stroke(255, 255, 0);
-        strokeWeight(pose.score+'px');
-        line(p1.position.x, p1.position.y, p2.position.x, p2.position.y);
-      }
+      // else {
+      //   stroke(255, 255, 0);
+      //   strokeWeight(pose.score+'px');
+      //   line(p1.position.x, p1.position.y, p2.position.x, p2.position.y);
+      // }
 
     });
   });
