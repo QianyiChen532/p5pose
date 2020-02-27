@@ -33,58 +33,32 @@ function drawPoses(poses) {
   // easier to work with.
   translate(width, 0); // move the left side of the image to the right
   scale(-1.0, 1.0);
-  // image(video, 0, 0, video.width, video.height);
-  background('rgba(0,0,0,0.5)');
+  image(video, 0, 0, video.width, video.height);
   drawKeypoints(poses);
   drawSkeleton(poses);
-  // console.log(poses);
 }
 
 // Draw ellipses over the detected keypoints
 function drawKeypoints(poses) {
   poses.forEach(pose =>
     pose.pose.keypoints.forEach(keypoint => {
-      if (0.5>keypoint.score > 0.2) {
+      if (keypoint.score > 0.2) {
         fill(0, 255, 0);
-        print(keypoint.score);
         noStroke();
-        ellipse(keypoint.position.x, keypoint.position.y, 20, 20);
+        ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
       }
-      else if (0.8>keypoint.score > 0.5){
-          fill(255, 255, 0);
-          // print(keypoint.score);
-          noStroke();
-          rect(keypoint.position.x, keypoint.position.y, 20, 20);
-        }
-        else{
-            fill(255, 255, 255);
-            // print(keypoint.score);
-            noStroke();
-            rect(keypoint.position.x, keypoint.position.y, 20, 20);
-          }
     })
   );
 }
 
 // Draw connections between the skeleton joints.
 function drawSkeleton(poses) {
-
   poses.forEach(pose => {
     pose.skeleton.forEach(skeleton => {
       // skeleton is an array of two keypoints. Extract the keypoints.
       const [p1, p2] = skeleton;
-      // console.log(skeleton);
-
-        stroke(255, 0, 0);
-        strokeWeight(pose.score+'px');
-        line(p1.position.x, p1.position.y, p2.position.x, p2.position.y);
-
-      else {
-        stroke(255, 255, 0);
-        strokeWeight(pose.score+'px');
-        line(p1.position.x, p1.position.y, p2.position.x, p2.position.y);
-      }
-
+      stroke(255, 0, 0);
+      line(p1.position.x, p1.position.y, p2.position.x, p2.position.y);
     });
   });
 }
