@@ -1,31 +1,44 @@
-// setup initializes this to a p5.js Video instance.
+//reference:
+//posenet with preload video:https://gist.github.com/golanlevin/701cec4696b61715879ccdb64855c155
+let poseNet;
+let poses = [];
+
 let video;
 
-// p5js calls this code once when the page is loaded (and, during development,
-// when the code is modified.)
-export function setup() {
+function setup() {
+  console.log('2');
   createCanvas(windowWidth,windowHeight);
-  video = select("video") || createCapture(VIDEO);
+  // video = select("video") || createCapture(VIDEO);
+  video = createVideo('asset/Untitled.mov',vidLoad);
   video.size(width, height);
 
-  // Create a new poseNet method with single-pose detection. The second argument
-  // is a function that is called when the model is loaded. It hides the HTML
-  // element that displays the "Loading model…" text.
   const poseNet = ml5.poseNet(video, () => select("#status").hide());
 
-  // Every time we get a new pose, apply the function `drawPoses` to it (call
-  // `drawPoses(poses)`) to draw it.
-  poseNet.on("pose", drawPoses);
-
+  poseNet.on('pose', function(results) {
+   poses = results;
+ });
   // Hide the video element, and just show the canvas
   video.hide();
 }
 
-// p5js calls this function once per animation frame. In this program, it does
-// nothing---instead, the call to `poseNet.on` in `setup` (above) specifies a
-// function that is applied to the list of poses whenever PoseNet processes a
-// video frame.
-export function draw() {}
+
+function mousePressed(){
+  vidLoad();
+}
+
+function vidLoad() {
+  video.stop();
+  video.loop();
+  videoIsPlaying = true;
+}
+
+function draw() {
+  console.log('1');
+  image(video, 0, 0, width, height);
+
+  // We can call both functions to draw all keypoints and the skeletons
+  drawPoses(poses);
+}
 
 function drawPoses(poses) {
   // Modify the graphics context to flip all remaining drawing horizontally.
